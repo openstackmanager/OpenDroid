@@ -1,6 +1,7 @@
 package opendroid.nox.opendroid;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +22,7 @@ import opendroid.nox.opendroid.parsers.ImageJSONParser;
 /**
  * Created by Brian on 23/04/2015.
  */
-public class FragmentImages extends  Fragment{
+public class FragmentImages extends ListFragment {
 
     public FragmentImages(){}
 
