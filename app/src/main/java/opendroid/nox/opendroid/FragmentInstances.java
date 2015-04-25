@@ -2,6 +2,7 @@ package opendroid.nox.opendroid;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -39,6 +40,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     List<Instances> instanceList;
     View rootView;
     ListView lv;
+   // ProgressDialog progress;
     private ItemFragment.OnFragmentInteractionListener mListener;
 
     public static FragmentInstances newInstance(){
@@ -54,9 +56,8 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
         //output = (TextView) rootView.findViewById(R.id.textView6);
 
-       // pb = (ProgressBar) rootView.findViewById(R.id.progressBarInstances);
+        //pb = (ProgressBar) rootView.findViewById(R.id.progressBarInstances);
         //pb.setVisibility(View.INVISIBLE);
-
         lv = (ListView) rootView.findViewById(R.id.InstaceListView);
 
         tasks = new ArrayList<>();
@@ -104,7 +105,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, instances);
 
-        lv.setAdapter(arrayAdapter);
+        this.setListAdapter(arrayAdapter);
         lv.setOnItemClickListener(this);
     }
 
@@ -125,13 +126,16 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
 
     private class MyTask extends AsyncTask<String, String, String> {
-
+        ProgressDialog progress = null;
         @Override
         protected void onPreExecute() {
 
             //Make progress bar visible before task is executed and then adds task to the task list
             if (tasks.size() == 0) {
-                //pb.setVisibility(View.VISIBLE);
+
+                progress = ProgressDialog.show(getActivity(),"Loading","");
+                progress.setCancelable(true);
+
             }
             tasks.add(this);
         }
@@ -160,7 +164,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
             //Remove tasks from list and when list size is back to zero make progressbar invisible
             tasks.remove(this);
             if (tasks.size() == 0) {
-                //pb.setVisibility(View.INVISIBLE);
+                progress.dismiss();
             }
 
         }
