@@ -3,6 +3,7 @@ package opendroid.nox.opendroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +31,6 @@ public class FragmentOverview extends Fragment {
     TextView output;
     View rootView;
     Limits limitList;
-    ProgressBar pb;
 
     public static FragmentOverview newInstance(){
         FragmentOverview fragment = new FragmentOverview();
@@ -43,12 +43,7 @@ public class FragmentOverview extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         output = (TextView) rootView.findViewById(R.id.textView);
-        pb = (ProgressBar) rootView.findViewById(R.id.progressBar2);
-        pb.setVisibility(View.INVISIBLE);
-        //View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/limits");
-
-        //updateDisplay();
         return rootView;
     }
 
@@ -73,12 +68,12 @@ public class FragmentOverview extends Fragment {
     }
 
     private class MyTask extends AsyncTask<String, String, String> {
-
+        ProgressDialog progress = null;
         @Override
         protected void onPreExecute() {
 
             if (tasks.size() == 0) {
-                pb.setVisibility(View.VISIBLE);
+                progress = ProgressDialog.show(getActivity(), "Loading", "", true, true);
             }
             tasks.add(this);
         }
@@ -100,8 +95,7 @@ public class FragmentOverview extends Fragment {
             //Remove tasks from list and when list size is back to zero make progressbar invisible
             tasks.remove(this);
             if (tasks.size() == 0) {
-                pb.setVisibility(View.INVISIBLE);
-
+                progress.dismiss();
             }
             updateDisplay();
         }

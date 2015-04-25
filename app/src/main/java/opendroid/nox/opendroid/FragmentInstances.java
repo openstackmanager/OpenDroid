@@ -132,10 +132,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
             //Make progress bar visible before task is executed and then adds task to the task list
             if (tasks.size() == 0) {
-
-                progress = ProgressDialog.show(getActivity(),"Loading","");
-                progress.setCancelable(true);
-
+                progress = ProgressDialog.show(getActivity(),"Loading","",true,true);
             }
             tasks.add(this);
         }
