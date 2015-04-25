@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import opendroid.nox.opendroid.model.Images;
+import opendroid.nox.opendroid.model.Instances;
 import opendroid.nox.opendroid.parsers.ImageJSONParser;
 
 /**
@@ -29,8 +32,10 @@ public class FragmentImages extends ListFragment {
     TextView output;
     ProgressBar pb;
     List<MyTask> tasks;
-
     List<Images> imageList;
+    List<String> images = new ArrayList<String>();;
+    View rootView;
+    ListView lv;
 
     public static FragmentImages newInstance(){
         FragmentImages fragment = new FragmentImages();
@@ -38,17 +43,18 @@ public class FragmentImages extends ListFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_images, container, false);
+        rootView = inflater.inflate(R.layout.fragment_images, container, false);
 
-        output = (TextView) rootView.findViewById(R.id.textView7);
+        //output = (TextView) rootView.findViewById(R.id.textView7);
 
-        pb = (ProgressBar) rootView.findViewById(R.id.progressBarImages);
-        pb.setVisibility(View.INVISIBLE);
-
+        //pb = (ProgressBar) rootView.findViewById(R.id.progressBarImages);
+       // pb.setVisibility(View.INVISIBLE);
+        lv = (ListView) rootView.findViewById(R.id.ImageslistView);
         tasks = new ArrayList<>();
         //Should pass in uri data from login activity, not hardcoded like below
         String tenantID = HttpManager.tenantId;
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/images");
+        updateDisplay();
         return rootView;
     }
 
@@ -71,12 +77,13 @@ public class FragmentImages extends ListFragment {
                 /**
                  * Populate the list view with instances
                  */
-                output.append(image.getName() + "\n"+ image.getId()+
-                        "\n");
+                images.add(image.getName()+"\n"+"Running" );
 
             }
         }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, images);
 
+        lv.setAdapter(arrayAdapter);
     }
 
     /**
@@ -101,7 +108,7 @@ public class FragmentImages extends ListFragment {
 
             //Make progress bar visible before task is executed and then adds task to the task list
             if (tasks.size() == 0) {
-                pb.setVisibility(View.VISIBLE);
+                //pb.setVisibility(View.VISIBLE);
             }
             tasks.add(this);
         }
@@ -130,7 +137,7 @@ public class FragmentImages extends ListFragment {
             //Remove tasks from list and when list size is back to zero make progressbar invisible
             tasks.remove(this);
             if (tasks.size() == 0) {
-                pb.setVisibility(View.INVISIBLE);
+                //pb.setVisibility(View.INVISIBLE);
             }
 
         }

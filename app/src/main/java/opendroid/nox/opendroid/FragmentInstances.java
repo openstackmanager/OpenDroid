@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -22,13 +23,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import opendroid.nox.opendroid.dummy.DummyContent;
 import opendroid.nox.opendroid.model.Instances;
 import opendroid.nox.opendroid.parsers.InstanceJSONParser;
 
 /**
  * Created by NOX on 16/04/2015.
  */
-public class FragmentInstances extends ListFragment {
+public class FragmentInstances extends ListFragment implements AdapterView.OnItemClickListener {
 
     TextView output;
     ProgressBar pb;
@@ -37,6 +39,7 @@ public class FragmentInstances extends ListFragment {
     List<Instances> instanceList;
     View rootView;
     ListView lv;
+    private ItemFragment.OnFragmentInteractionListener mListener;
 
     public static FragmentInstances newInstance(){
         FragmentInstances fragment = new FragmentInstances();
@@ -68,7 +71,14 @@ public class FragmentInstances extends ListFragment {
         return rootView;
     }
 
-
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (null != mListener) {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+        }
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -95,7 +105,9 @@ public class FragmentInstances extends ListFragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, instances);
 
         lv.setAdapter(arrayAdapter);
+        lv.setOnItemClickListener(this);
     }
+
 
     /**
      *
