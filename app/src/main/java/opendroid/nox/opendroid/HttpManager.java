@@ -22,6 +22,7 @@ public class HttpManager {
     static  String tokenId = null;
     static String tenantId = null;
     static String responseCode = null;
+    static String endPoint = "http://95.44.212.163/";
     //static AndroidHttpClient client = AndroidHttpClient.newInstance("AndroidAgent");
 
     public static String getData(String uri){
