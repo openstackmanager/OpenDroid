@@ -17,4 +17,7 @@
 
     <string name="hello_world">Hello world!</string>
 
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="splash_text">OPEN\nDROID</string>
+
 </resources>

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getActionBar().hide();
         final Button login = (Button) findViewById(R.id.button1);
         final TextView endpoint1 = (TextView) findViewById(R.id.editText);
         final TextView tenant1 = (TextView) findViewById(R.id.editText2);

@@ -27,7 +27,7 @@ import opendroid.nox.opendroid.parsers.LimitsJSONParser;
  * Created by NOX on 16/04/2015.
  */
 public class FragmentOverview extends Fragment {
-    List<MyTask> tasks = new ArrayList<>();;
+    List<MyTask> tasks = new ArrayList<>();
     TextView output;
     View rootView;
     Limits limitList;

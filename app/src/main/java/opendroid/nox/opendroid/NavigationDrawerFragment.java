@@ -4,6 +4,8 @@ package opendroid.nox.opendroid;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -231,16 +233,17 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        // If the drawer is open, show the global app actions in the action bar. See also
-//        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-//        if (mDrawerLayout != null && isDrawerOpen()) {
-//            inflater.inflate(R.menu.global, menu);
-//            showGlobalContextActionBar();
-//        }
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // If the drawer is open, show the global app actions in the action bar. See also
+        // showGlobalContextActionBar, which controls the top-left area of the action bar.
+        if (mDrawerLayout != null && isDrawerOpen()) {
+            inflater.inflate(R.menu.global, menu);
+            showGlobalContextActionBar();
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -248,8 +251,13 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.horizon_url) {
-            //Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        int id = item.getItemId();
+
+        if (id == R.id.horizon_url) {
+            String horizonWebpage = HttpManager.endPoint;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(horizonWebpage));
+            startActivity(intent);
+
             return true;
         }
 
