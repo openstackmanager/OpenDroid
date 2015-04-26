@@ -48,6 +48,7 @@ public class FragmentInstanceDetail extends Fragment {
 
     public FragmentInstanceDetail(){}
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

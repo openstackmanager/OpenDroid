@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -69,17 +70,30 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FragmentManager fragmentManager = getFragmentManager();
-        //Loading details fragment and passing the instance id to the FragmentInstanceDetail Class.
-        //Using a String array to hold the server id's, this allows the id for the selected server to be passed.
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[position]))
-                    .commit();
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        FragmentManager fragmentManager = getFragmentManager();
+//        //Loading details fragment and passing the instance id to the FragmentInstanceDetail Class.
+//        //Using a String array to hold the server id's, this allows the id for the selected server to be passed.
+//
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[position]))
+//                    .commit();
+        Intent intent = new Intent(getActivity(), InstanceDetailActivity.class);
+        intent.putExtra("Id",instanceId[position]);
+        startActivity(intent);
+
+
+
 
 
     }
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

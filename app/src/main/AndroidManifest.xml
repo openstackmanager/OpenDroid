@@ -25,7 +25,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity">
+            android:label="MainActivity" >
+        </activity>
+        <activity
+            android:name=".InstanceDetailActivity"
+            android:label="@string/title_activity_instance_detail" >
         </activity>
     </application>
 
