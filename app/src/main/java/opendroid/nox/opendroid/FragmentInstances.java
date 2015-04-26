@@ -73,23 +73,12 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
         FragmentManager fragmentManager = getFragmentManager();
         //Loading details fragment and passing the instance id to the FragmentInstanceDetail Class.
         //Using a String array to hold the server id's, this allows the id for the selected server to be passed.
-        if (position == 0) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[0].toString()))
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[position]))
                     .commit();
-        } else if (position == 1) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[1].toString()))
-                    .commit();
-        } else if (position == 2) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[2].toString()))
-                    .commit();
-        } else if (position == 3) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[3].toString()))
-                    .commit();
-        }
+
+
     }
     @Override
     public void onAttach(Activity activity) {
@@ -104,7 +93,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     }
 
     protected void updateDisplay() {
-        instanceId = new String[instanceList.size()];
+        instanceId = new String[100];
         int count  = 0;
         if (instanceList != null) {
             for (Instances instance : instanceList) {

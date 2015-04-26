@@ -7,11 +7,14 @@ package opendroid.nox.opendroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -47,7 +50,9 @@ public class FragmentInstanceDetail extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         rootView = inflater.inflate(R.layout.fragment_instance_detail, container, false);
+
         output = (TextView) rootView.findViewById(R.id.textView);
         //requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/"+_instanceId);
         Toast.makeText(getActivity(),_instanceId,Toast.LENGTH_LONG).show();
@@ -59,6 +64,22 @@ public class FragmentInstanceDetail extends Fragment {
         super.onAttach(activity);
 
         ((HomeScreen) activity).onSectionAttached(1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.horizon_url) {
+            String horizonWebpage = HttpManager.endPoint;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(horizonWebpage));
+            startActivity(intent);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void requestData(String uri) {
