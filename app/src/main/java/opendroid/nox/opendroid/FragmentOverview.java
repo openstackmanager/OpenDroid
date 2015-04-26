@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+
 import java.util.ArrayList;
 import java.util.List;
 import opendroid.nox.opendroid.model.Limits;
@@ -34,8 +37,11 @@ public class FragmentOverview extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_overview, container, false);
-        output = (TextView) rootView.findViewById(R.id.textView);
+        //output = (TextView) rootView.findViewById(R.id.textView);
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/limits");
+        LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+
+        chart.invalidate();
         return rootView;
     }
 
@@ -54,8 +60,8 @@ public class FragmentOverview extends Fragment {
     protected void updateDisplay() {
 
         if (limitList != null) {
-            Log.i("TAG", "update display" + limitList.getTotalCoresUsed());
-            output.append("Cores Used: "+limitList.getTotalCoresUsed()+" Total Cores: "+limitList.getMaxTotalCores());
+            //Log.i("TAG", "update display" + limitList.getTotalCoresUsed());
+            //output.append("Cores Used: "+limitList.getTotalCoresUsed()+" Total Cores: "+limitList.getMaxTotalCores());
         }
     }
 

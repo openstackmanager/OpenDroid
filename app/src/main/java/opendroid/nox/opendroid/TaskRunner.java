@@ -18,7 +18,7 @@ public class TaskRunner extends AsyncTask<String,String,String> {
     @Override
     protected void onPreExecute() {
         if (tasks.size() == 0) {
-            MainActivity.pb.setVisibility(View.VISIBLE);
+
         }
         tasks.add(this);
     }
@@ -37,7 +37,7 @@ public class TaskRunner extends AsyncTask<String,String,String> {
 
         tasks.remove(this);
         if (tasks.size() == 0) {
-           MainActivity.pb.setVisibility(View.INVISIBLE);
+
         }
         if(result.equals("200")){
 

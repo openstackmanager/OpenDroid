@@ -54,7 +54,7 @@ public class FragmentInstanceDetail extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_instance_detail, container, false);
 
-        output = (TextView) rootView.findViewById(R.id.textView);
+        //output = (TextView) rootView.findViewById(R.id.textView);
         //requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/"+_instanceId);
         Toast.makeText(getActivity(),_instanceId,Toast.LENGTH_LONG).show();
         return rootView;

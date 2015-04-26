@@ -1,72 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    android:divider="@color/dividerColor"
-    >
+    android:layout_height="match_parent" >
 
-
-    <TableLayout
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:divider="@color/accentColor"
-        android:showDividers="beginning|middle|end"
-        android:dividerPadding="@dimen/activity_vertical_margin">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/accentColor"
-            android:theme="@style/AppTheme"
-            android:textColor="@color/primaryText"
-            android:typeface="normal"
-            android:shadowColor="@color/accentColor"
-            android:singleLine="true"
-            android:backgroundTintMode="screen"
-            />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView2"
-            android:layout_gravity="center_horizontal" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView3"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView4" />
-    </TableLayout>
+        android:layout_height="match_parent"
+        />
 
 
-</LinearLayout>
-
+</RelativeLayout>

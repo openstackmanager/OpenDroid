@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class HttpManager {
     static String token = null;
-    static  String tokenId = null;
+    static String tokenId = null;
     static String tenantId = null;
     static String responseCode = null;
     static String endPoint = "http://95.44.212.163/";
@@ -48,7 +48,13 @@ public class HttpManager {
         }
     }
 
-    public static String login(String uri, String... params){
+    public static String login(String... params){
+
+        String uri = params[0];
+        String endpoint = params[1];
+        String tenant = params[2];
+        String username = params[3];
+        String password = params[4];
 
         AndroidHttpClient client = AndroidHttpClient.newInstance("AndroidAgent");
         HttpPost httppost = new HttpPost(uri);
@@ -56,10 +62,10 @@ public class HttpManager {
         String code;
         String a = "{\n" +
                 "    \"auth\": {\n" +
-                "        \"tenantName\": \"admin\",\n" +
+                "        \"tenantName\": \""+tenant+"\",\n" +
                 "        \"passwordCredentials\": {\n" +
-                "            \"username\": \"admin\",\n" +
-                "            \"password\": \"openstack\"\n" +
+                "            \"username\": \""+username+"\",\n" +
+                "            \"password\": \""+password+"\"\n" +
                 "        }\n" +
                 "    }\n" +
                 "}";

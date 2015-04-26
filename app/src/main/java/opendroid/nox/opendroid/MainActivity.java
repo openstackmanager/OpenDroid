@@ -1,6 +1,7 @@
 package opendroid.nox.opendroid;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -23,8 +24,6 @@ import java.util.List;
 
 
 public class MainActivity extends Activity {
-    TextView output;
-    static ProgressBar pb;
     static String responseCode;
     List<MyTask> tasks;
 
@@ -33,23 +32,24 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getActionBar().hide();
-        final Button login = (Button) findViewById(R.id.button1);
-        final TextView endpoint1 = (TextView) findViewById(R.id.editText);
-        final TextView tenant1 = (TextView) findViewById(R.id.editText2);
-        final TextView username1 = (TextView) findViewById(R.id.editText3);
-        final TextView password1 = (TextView) findViewById(R.id.editText4);
 
-        username1.setText("216fe186a8bc4ee2809fac384dea9fe1");
+        final Button login = (Button) findViewById(R.id.button1);
+        final TextView endpoint = (TextView) findViewById(R.id.editText);
+        final TextView tenant = (TextView) findViewById(R.id.editText2);
+        final TextView username = (TextView) findViewById(R.id.editText3);
+        final TextView password = (TextView) findViewById(R.id.editText4);
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                login("http://95.44.212.163:5000/v2.0/tokens", "");
+                final String endpointString = endpoint.getText().toString();
+                final String tenantString = tenant.getText().toString();
+                final String usernameString = username.getText().toString();
+                final String passwordString = password.getText().toString();
+                login("http://"+endpointString+":5000/v2.0/tokens", endpointString,tenantString,usernameString,passwordString);
             }
         });
-
-        pb = (ProgressBar) findViewById(R.id.progressBar);
-        pb.setVisibility(View.INVISIBLE);
-
         tasks = new ArrayList<>();
     }
 
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
     private void login(String uri, String... params) {
         if(isOnline()) {
             MyTask task = new MyTask();
-            task.execute(uri, params[0]);
+            task.execute(uri, params[0],params[1],params[2],params[3]);
         }else {
             Toast.makeText(this, "No Network Connection...", Toast.LENGTH_LONG).show();
         }
@@ -110,13 +110,13 @@ public class MainActivity extends Activity {
     }
 
     private class MyTask extends AsyncTask<String, String, String> {
-
+        ProgressDialog progress = null;
         @Override
         protected void onPreExecute() {
             //updateDisplay("Starting task");
 
             if (tasks.size() == 0) {
-                pb.setVisibility(View.VISIBLE);
+                progress = ProgressDialog.show(MainActivity.this, "Loading", "", true, true);
             }
             tasks.add(this);
         }
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(String... params) {
 
-            String content = HttpManager.login(params[0], params[1]);
+            String content = HttpManager.login(params[0],params[1],params[2],params[3],params[4]);
             if (content.equals("200")) {
                 loadMenu();
             }
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
 
             tasks.remove(this);
             if (tasks.size() == 0) {
-                pb.setVisibility(View.INVISIBLE);
+                progress.dismiss();
             }
 
         }
