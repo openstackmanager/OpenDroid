@@ -1,41 +1,56 @@
 package opendroid.nox.opendroid;
 
+/**
+ * Created by Brian on 26/04/2015.
+ */
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
-import opendroid.nox.opendroid.model.Limits;
-import opendroid.nox.opendroid.parsers.LimitsJSONParser;
+
+import opendroid.nox.opendroid.model.InstanceDetail;
+
+import opendroid.nox.opendroid.parsers.InstanceDetailJSONParser;
+
+
+
 
 /**
  * Created by NOX on 16/04/2015.
  */
-public class FragmentOverview extends Fragment {
+public class FragmentInstanceDetail extends Fragment {
     List<MyTask> tasks = new ArrayList<>();
     TextView output;
     View rootView;
-    Limits limitList;
+    InstanceDetail instance;
+    static String _instanceId;
 
-    public static FragmentOverview newInstance(){
-        FragmentOverview fragment = new FragmentOverview();
+    public static FragmentInstanceDetail newInstance(String instanceId){
+        _instanceId = instanceId;
+        FragmentInstanceDetail fragment = new FragmentInstanceDetail();
         return fragment;
     }
 
-    public FragmentOverview(){}
+    public FragmentInstanceDetail(){}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_overview, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_instance_detail, container, false);
         output = (TextView) rootView.findViewById(R.id.textView);
-        requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/limits");
+        //requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/"+_instanceId);
+        Toast.makeText(getActivity(),_instanceId,Toast.LENGTH_LONG).show();
         return rootView;
     }
 
@@ -53,9 +68,9 @@ public class FragmentOverview extends Fragment {
 
     protected void updateDisplay() {
 
-        if (limitList != null) {
-            Log.i("TAG", "update display" + limitList.getTotalCoresUsed());
-            output.append("Cores Used: "+limitList.getTotalCoresUsed()+" Total Cores: "+limitList.getMaxTotalCores());
+        if (instance != null) {
+            Log.i("TAG", "update display" + instance.getGetData());
+            output.append(instance.getGetData());
         }
     }
 
@@ -78,8 +93,8 @@ public class FragmentOverview extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            //Passing result from doInBackgroung to LimitsJSONParser and getting an limit data back
-            limitList = LimitsJSONParser.parseFeed(result);
+            //Passing result from doInBackground to InstanceDetailJSONParser and getting data back
+            instance = InstanceDetailJSONParser.parseFeed(result);
 
             //call updateDisplay to populate listView
 

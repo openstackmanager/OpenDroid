@@ -1,7 +1,9 @@
 package opendroid.nox.opendroid;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -18,6 +21,7 @@ import android.support.v4.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import opendroid.nox.opendroid.dummy.DummyContent;
 import opendroid.nox.opendroid.model.Images;
 import opendroid.nox.opendroid.model.Instances;
 import opendroid.nox.opendroid.parsers.ImageJSONParser;
@@ -25,7 +29,7 @@ import opendroid.nox.opendroid.parsers.ImageJSONParser;
 /**
  * Created by Brian on 23/04/2015.
  */
-public class FragmentImages extends ListFragment {
+public class FragmentImages extends ListFragment implements AdapterView.OnItemClickListener {
 
     public FragmentImages(){}
 
@@ -37,24 +41,28 @@ public class FragmentImages extends ListFragment {
     View rootView;
     ListView lv;
 
+    private ItemFragment.OnFragmentInteractionListener mListener;
+
     public static FragmentImages newInstance(){
         FragmentImages fragment = new FragmentImages();
         return fragment;
     }
 
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_images, container, false);
 
-        //output = (TextView) rootView.findViewById(R.id.textView7);
-
-        //pb = (ProgressBar) rootView.findViewById(R.id.progressBarImages);
-       // pb.setVisibility(View.INVISIBLE);
         lv = (ListView) rootView.findViewById(R.id.ImageslistView);
+
         tasks = new ArrayList<>();
+
         //Should pass in uri data from login activity, not hardcoded like below
         String tenantID = HttpManager.tenantId;
+
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/images");
+
         updateDisplay();
+
         return rootView;
     }
 
@@ -75,15 +83,40 @@ public class FragmentImages extends ListFragment {
         if (imageList != null) {
             for (Images image : imageList) {
                 /**
-                 * Populate the list view with instances
+                 * Populate the list view with images
                  */
-                images.add(image.getName()+"\n"+"Running" );
+                images.add(image.getName()+"\n" );
 
             }
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, images);
 
-        lv.setAdapter(arrayAdapter);
+        this.setListAdapter(arrayAdapter);
+        lv.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        FragmentManager fragmentManager = getFragmentManager();
+
+        if (position == 0) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentOverview.newInstance())
+                    .commit();
+        } else if (position == 1) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentInstances.newInstance())
+                    .commit();
+        } else if (position == 2) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentVolumes.newInstance())
+                    .commit();
+        } else if (position == 3) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentImages.newInstance())
+                    .commit();
+        }
+
     }
 
     /**
@@ -102,13 +135,13 @@ public class FragmentImages extends ListFragment {
 
 
     private class MyTask extends AsyncTask<String, String, String> {
-
+        ProgressDialog progress = null;
         @Override
         protected void onPreExecute() {
 
             //Make progress bar visible before task is executed and then adds task to the task list
             if (tasks.size() == 0) {
-                //pb.setVisibility(View.VISIBLE);
+                progress = ProgressDialog.show(getActivity(),"Loading","",true,true);
             }
             tasks.add(this);
         }
@@ -121,7 +154,7 @@ public class FragmentImages extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            //Passing result from doInBackgroung to InstanceJSONParser and getting an Instance list back
+            //Passing result from doInBackgroung to ImageJSONParser and getting an Imagelist back
             imageList = ImageJSONParser.parseFeed(result);
             if (imageList != null) {
                 for (Images image : imageList) {
@@ -137,7 +170,7 @@ public class FragmentImages extends ListFragment {
             //Remove tasks from list and when list size is back to zero make progressbar invisible
             tasks.remove(this);
             if (tasks.size() == 0) {
-                //pb.setVisibility(View.INVISIBLE);
+                progress.dismiss();
             }
 
         }

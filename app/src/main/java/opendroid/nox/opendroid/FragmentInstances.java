@@ -1,6 +1,7 @@
 package opendroid.nox.opendroid;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,14 +34,13 @@ import opendroid.nox.opendroid.parsers.InstanceJSONParser;
  */
 public class FragmentInstances extends ListFragment implements AdapterView.OnItemClickListener {
 
-    TextView output;
-    ProgressBar pb;
     List<MyTask> tasks;
     List<String> instances = new ArrayList<String>();;
     List<Instances> instanceList;
     View rootView;
     ListView lv;
-   // ProgressDialog progress;
+    String[] instanceId;
+
     private ItemFragment.OnFragmentInteractionListener mListener;
 
     public static FragmentInstances newInstance(){
@@ -54,10 +54,6 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_instances, container, false);
 
-        //output = (TextView) rootView.findViewById(R.id.textView6);
-
-        //pb = (ProgressBar) rootView.findViewById(R.id.progressBarInstances);
-        //pb.setVisibility(View.INVISIBLE);
         lv = (ListView) rootView.findViewById(R.id.InstaceListView);
 
         tasks = new ArrayList<>();
@@ -74,10 +70,25 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+        FragmentManager fragmentManager = getFragmentManager();
+        //Loading details fragment and passing the instance id to the FragmentInstanceDetail Class.
+        //Using a String array to hold the server id's, this allows the id for the selected server to be passed.
+        if (position == 0) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[0].toString()))
+                    .commit();
+        } else if (position == 1) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[1].toString()))
+                    .commit();
+        } else if (position == 2) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[2].toString()))
+                    .commit();
+        } else if (position == 3) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[3].toString()))
+                    .commit();
         }
     }
     @Override
@@ -93,13 +104,17 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     }
 
     protected void updateDisplay() {
-
+        instanceId = new String[instanceList.size()];
+        int count  = 0;
         if (instanceList != null) {
             for (Instances instance : instanceList) {
                 /**
                  * Populate the list view with instances
                  */
                 instances.add(instance.getName()+"\n"+"Running" );
+                //Populating the Array of id's
+                instanceId[count] = instance.getId();
+                count++;
             }
         }
 
