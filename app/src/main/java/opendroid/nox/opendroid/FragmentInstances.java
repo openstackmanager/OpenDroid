@@ -60,11 +60,9 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
         tasks = new ArrayList<>();
 
         //Should pass in uri data from login activity, not hardcoded like below
-        String tenantID = HttpManager.tenantId;
+        //String tenantID = HttpManager.tenantId;
 
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers");
-
-        updateDisplay();
 
         return rootView;
     }
@@ -86,11 +84,6 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
         Intent intent = new Intent(getActivity(), InstanceDetailActivity.class);
         intent.putExtra("Id",instanceId[position]);
         startActivity(intent);
-
-
-
-
-
     }
 
 
@@ -165,14 +158,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
         protected void onPostExecute(String result) {
             //Passing result from doInBackgroung to InstanceJSONParser and getting an Instance list back
             instanceList = InstanceJSONParser.parseFeed(result);
-            if (instanceList != null) {
-                for (Instances instance : instanceList) {
-                    /**
-                     * Populate the list view with instances
-                     */
-                    Log.i("TAG", "result "+ instance.getName());
-                }
-            }
+
             //call updateDisplay to populate listView
             updateDisplay();
 
@@ -181,7 +167,6 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
             if (tasks.size() == 0) {
                 progress.dismiss();
             }
-
         }
 
         @Override

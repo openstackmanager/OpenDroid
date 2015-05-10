@@ -14,12 +14,12 @@ import opendroid.nox.opendroid.model.Instances;
  */
 public class InstanceJSONParser {
     //Parsing query result and returning list
-    public static List<Instances> parseFeed(String content) {
+    public static List<Instances> parseFeed(String contentString) {
         try {
             //Pass the content string into a JSONObject
-            JSONObject ar = new JSONObject(content);
+            JSONObject content = new JSONObject(contentString);
             //Pass the server array from the JSONObject into the JSONArray
-            JSONArray result = ar.getJSONArray("servers");
+            JSONArray result = content.getJSONArray("servers");
 
             List<Instances> instanceList = new ArrayList<>();
 

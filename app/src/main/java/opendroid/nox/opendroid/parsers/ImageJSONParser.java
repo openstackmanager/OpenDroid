@@ -14,12 +14,12 @@ import opendroid.nox.opendroid.model.Instances;
  * Created by Brian on 21/04/2015.
  */
 public class ImageJSONParser {
-    public static List<Images> parseFeed(String content) {
+    public static List<Images> parseFeed(String stringContent) {
         try {
             //Pass the content string into a JSONObject
-            JSONObject ar = new JSONObject(content);
+            JSONObject content = new JSONObject(stringContent);
             //Pass the server array from the JSONObject into the JSONArray
-            JSONArray result = ar.getJSONArray("images");
+            JSONArray result = content.getJSONArray("images");
 
             List<Images> imageList = new ArrayList<>();
 

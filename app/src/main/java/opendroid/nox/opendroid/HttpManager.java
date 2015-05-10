@@ -50,11 +50,16 @@ public class HttpManager {
 
     public static String login(String... params){
 
-        String uri = params[0];
-        String endpoint = params[1];
-        String tenant = params[2];
-        String username = params[3];
-        String password = params[4];
+//        String uri = params[0];
+//        String endpoint = params[1];
+//        String tenant = params[2];
+//        String username = params[3];
+//        String password = params[4];
+        String uri = "http://95.44.212.163:5000/v2.0/tokens";
+        String endpoint = "";
+        String tenant = "admin";
+        String username = "admin";
+        String password = "openstack";
 
         AndroidHttpClient client = AndroidHttpClient.newInstance("AndroidAgent");
         HttpPost httppost = new HttpPost(uri);
@@ -87,20 +92,18 @@ public class HttpManager {
             Log.i("TAG", "Server response is " + response.getEntity());
             Log.i("TAG", "Server response is " + response.getStatusLine().getStatusCode() + " " + response.getStatusLine().getReasonPhrase());// Server response cannont be of type JSONObject
 
-        //Check if response from http request is accepted and start menu activity
-
             response = client.execute(httppost);
             r =  response.getStatusLine().getStatusCode();
             setResponseCode(""+r);
             HttpEntity entity = response.getEntity();
-            //passing response to token String
-            //token = EntityUtils.toString(entity);
+
             Log.i("TAG", "Token String value " + token);
 
             //Passing response to getToken method to extract the token ID
-            String tokenResponse= getToken(EntityUtils.toString(entity));//can only "consume" entity content once, will get error "Caused by: java.lang.IllegalStateException: Content has been consumed"
+            String tokenResponse= getToken(EntityUtils.toString(entity));//can only "consume" entity content once, will cause error "Caused by: java.lang.IllegalStateException: Content has been consumed"
             tokenId = tokenResponse;
             tenantId = tokenResponse;
+            getTenantId(tokenId);
         } catch (IOException e) {
             e.printStackTrace();
             return  null;
@@ -134,8 +137,9 @@ public class HttpManager {
         try {
             tokenId = new JSONObject(token);
             //Getting the id string from the JSONObject and assigning it to the String id
-            id = tokenId.getJSONObject("access").getJSONObject("token").getJSONObject("tenant").getString("id").toString();
+            id = tokenId.getJSONObject("access").getJSONObject("scope").getJSONObject("project").getString("id").toString();
             Log.i("TAG", "Tenat ID  " + id);
+            tenantId = id;
         } catch (JSONException e) {
             e.printStackTrace();
         }

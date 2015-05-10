@@ -33,13 +33,11 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
 
     public FragmentImages(){}
 
-    TextView output;
-    ProgressBar pb;
     List<MyTask> tasks;
     List<Images> imageList;
     List<String> images = new ArrayList<String>();;
     View rootView;
-    ListView lv;
+    ListView ListView;
 
     private ItemFragment.OnFragmentInteractionListener mListener;
 
@@ -52,7 +50,7 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_images, container, false);
 
-        lv = (ListView) rootView.findViewById(R.id.ImageslistView);
+        ListView = (ListView) rootView.findViewById(R.id.ImageslistView);
 
         tasks = new ArrayList<>();
 
@@ -92,7 +90,7 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, images);
 
         this.setListAdapter(arrayAdapter);
-        lv.setOnItemClickListener(this);
+        ListView.setOnItemClickListener(this);
     }
 
     @Override
