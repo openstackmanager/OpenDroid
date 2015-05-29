@@ -116,11 +116,11 @@ public class FragmentOverview extends Fragment {
         num.add(new Entry(totalram, 2));
 
         ArrayList<String> itemArray = new ArrayList<>();
-        itemArray.add(items[0]+": "+usedram+" MB");
+        itemArray.add(items[0] + ": " + usedram + " MB");
 
         int remainingRam= totalram - usedram;
 
-        itemArray.add(items[1] +": "+remainingRam+" MB");
+        itemArray.add(items[1] + ": " + remainingRam + " MB");
 
         PieDataSet pdata = new PieDataSet(num,"RAM");
         pdata.setSliceSpace(2);
@@ -130,7 +130,8 @@ public class FragmentOverview extends Fragment {
         ramChart.setHoleColorTransparent(true);
         ramChart.setHoleRadius(7);
         ramChart.setTransparentCircleRadius(10);
-
+        ramChart.animate();
+        ramChart.animateXY(3000, 2000);
         ArrayList<Integer> colours = new ArrayList<>();
         for(int c : ColorTemplate.LIBERTY_COLORS)
             colours.add(c);
@@ -140,7 +141,7 @@ public class FragmentOverview extends Fragment {
         pdata.setColors(colours);
         ramChart.setData(dataSet);
         Legend legend = ramChart.getLegend();
-        legend.setEnabled(false);
+        legend.setEnabled(true);
 
         ramChart.invalidate();
     }

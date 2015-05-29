@@ -4,36 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart2"
-            android:layout_width="180dp"
-            android:layout_height="179dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             />
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart3"
-            android:layout_width="180dp"
-            android:layout_height="179dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart4"
-            android:layout_width="180dp"
-            android:layout_height="179dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             />
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart5"
-            android:layout_width="180dp"
-            android:layout_height="179dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             />
-    </LinearLayout>
 </LinearLayout>
