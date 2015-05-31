@@ -3,6 +3,7 @@ package opendroid.nox.opendroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -123,6 +124,7 @@ public class FragmentOverview extends Fragment {
         itemArray.add(items[1] + ": " + remainingRam + " MB");
 
         PieDataSet pdata = new PieDataSet(num,"RAM");
+        pdata.setColors(new int[] { R.color.primaryColor, R.color.primaryColorDark, R.color.primaryColor,R.color.primaryColorDark}, this.getActivity());
         pdata.setSliceSpace(2);
         ramChart.setUsePercentValues(true);
         ramChart.setDescription("ram usage");
@@ -130,18 +132,22 @@ public class FragmentOverview extends Fragment {
         ramChart.setHoleColorTransparent(true);
         ramChart.setHoleRadius(7);
         ramChart.setTransparentCircleRadius(10);
-        ramChart.animate();
         ramChart.animateXY(3000, 2000);
+        ramChart.setRotationEnabled(false);
+
         ArrayList<Integer> colours = new ArrayList<>();
-        for(int c : ColorTemplate.LIBERTY_COLORS)
-            colours.add(c);
+        for(int c : ColorTemplate.COLORFUL_COLORS) {
+            //colours.add(c);
+        }
 
         PieData dataSet = new PieData(itemArray,pdata);
+
         colours.add(ColorTemplate.getHoloBlue());
-        pdata.setColors(colours);
+        //pdata.setColors(colours);
         ramChart.setData(dataSet);
         Legend legend = ramChart.getLegend();
         legend.setEnabled(true);
+        legend.setTextSize(12);
 
         ramChart.invalidate();
     }
@@ -170,6 +176,7 @@ public class FragmentOverview extends Fragment {
         chart3.setHoleColorTransparent(true);
         chart3.setHoleRadius(7);
         chart3.setTransparentCircleRadius(10);
+        chart3.animateXY(3000, 2000);
 
         ArrayList<Integer> colours = new ArrayList<>();
         for(int c : ColorTemplate.LIBERTY_COLORS)
@@ -179,7 +186,7 @@ public class FragmentOverview extends Fragment {
         colours.add(ColorTemplate.getHoloBlue());
         pdata.setColors(colours);
         Legend legend = chart3.getLegend();
-        legend.setEnabled(false);
+        legend.setEnabled(true);
         chart3.setData(dataSet);
         chart3.invalidate();
     }
