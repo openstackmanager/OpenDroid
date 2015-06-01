@@ -17,6 +17,8 @@ import java.util.List;
 import opendroid.nox.opendroid.model.InstanceDetail;
 import opendroid.nox.opendroid.parsers.InstanceDetailJSONParser;
 
+import static java.lang.Thread.sleep;
+
 
 public class InstanceDetailActivity extends Activity {
     String _instanceId;
@@ -56,6 +58,11 @@ public class InstanceDetailActivity extends Activity {
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 InstanceControl.pauseInstance("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action", "pause");
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
             }
         });
@@ -63,6 +70,11 @@ public class InstanceDetailActivity extends Activity {
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 InstanceControl.resumeInstance("http://95.44.212.163:8774/v2.1/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action","unpause");
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
             }
         });
