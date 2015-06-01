@@ -159,4 +159,70 @@ public class HttpManager {
         return responseCode;
     }
 
+    public static void instanceAction(String... params){
+        AndroidHttpClient client = AndroidHttpClient.newInstance("AndroidAgent");
+        HttpPost request = new HttpPost(params[0]);
+        request.setHeader("X-Auth-Token",tokenId);
+        HttpResponse response;
+        String a = "{\n" +
+                "    \""+params[1]+"\": null\n" +
+                "}";
+
+
+        try {
+            JSONObject auth1 = new JSONObject(a);
+
+            StringEntity auth = new StringEntity(auth1.toString());
+            auth.setContentEncoding("UTF-8");
+            auth.setContentType("application/json");
+            request.setEntity(auth);
+
+            response = client.execute(request);
+            HttpEntity entity = response.getEntity();
+            String re = EntityUtils.toString(entity);
+            Log.i("TAG", "Instance request :" + re);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+    }
+
+    public static String stopInstance(String... params){
+        AndroidHttpClient client = AndroidHttpClient.newInstance("AndroidAgent");
+        HttpPost httppost = new HttpPost(params[0]);
+
+        String a = "{\n" +
+                "    \"os-stop\": null\n" +
+                "}";
+        JSONObject start = null;
+        try {
+            start = new JSONObject(a);
+
+            StringEntity auth = new StringEntity(start.toString());
+            auth.setContentEncoding("UTF-8");
+            auth.setContentType("application/json");
+
+            httppost.setHeader("Content-type", "application/json");
+            httppost.setHeader("X-Auth-Token",tokenId);
+            httppost.setEntity(auth);
+
+            // Execute HTTP Post Request
+            HttpResponse response = client.execute(httppost);
+
+            response = client.execute(httppost);
+            HttpEntity entity = response.getEntity();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+        return a;
+    }
 }
+

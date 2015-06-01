@@ -103,7 +103,7 @@ public class FragmentOverview extends Fragment {
     protected void updateDisplay() {
         //Populatate charts
         if (limitList != null) {
-            chartOne(limitList.getTotalRAMUsed(),limitList.getMaxTotalRAMSize());
+            chartOne(limitList.getTotalRAMUsed(), limitList.getMaxTotalRAMSize());
             chartTwo(limitList.getTotalCoresUsed(), limitList.getMaxTotalCores());
         }
     }
@@ -127,7 +127,7 @@ public class FragmentOverview extends Fragment {
         pdata.setColors(new int[] { R.color.primaryColor, R.color.primaryColorDark, R.color.primaryColor,R.color.primaryColorDark}, this.getActivity());
         pdata.setSliceSpace(2);
         ramChart.setUsePercentValues(true);
-        ramChart.setDescription("ram usage");
+        ramChart.setDescription("Ram usage");
         ramChart.setDrawHoleEnabled(true);
         ramChart.setHoleColorTransparent(true);
         ramChart.setHoleRadius(7);
@@ -135,15 +135,9 @@ public class FragmentOverview extends Fragment {
         ramChart.animateXY(3000, 2000);
         ramChart.setRotationEnabled(false);
 
-        ArrayList<Integer> colours = new ArrayList<>();
-        for(int c : ColorTemplate.COLORFUL_COLORS) {
-            //colours.add(c);
-        }
 
         PieData dataSet = new PieData(itemArray,pdata);
 
-        colours.add(ColorTemplate.getHoloBlue());
-        //pdata.setColors(colours);
         ramChart.setData(dataSet);
         Legend legend = ramChart.getLegend();
         legend.setEnabled(true);
@@ -177,6 +171,7 @@ public class FragmentOverview extends Fragment {
         chart3.setHoleRadius(7);
         chart3.setTransparentCircleRadius(10);
         chart3.animateXY(3000, 2000);
+        chart3.setRotationEnabled(false);
 
         ArrayList<Integer> colours = new ArrayList<>();
         for(int c : ColorTemplate.LIBERTY_COLORS)

@@ -21,7 +21,7 @@ import android.support.v4.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import opendroid.nox.opendroid.dummy.DummyContent;
+
 import opendroid.nox.opendroid.model.Images;
 import opendroid.nox.opendroid.model.Instances;
 import opendroid.nox.opendroid.parsers.ImageJSONParser;
@@ -39,7 +39,7 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
     View rootView;
     ListView ListView;
 
-    private ItemFragment.OnFragmentInteractionListener mListener;
+
 
     public static FragmentImages newInstance(){
         FragmentImages fragment = new FragmentImages();

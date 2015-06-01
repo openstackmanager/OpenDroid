@@ -18,16 +18,21 @@ import opendroid.nox.opendroid.model.Limits;
  */
 public class InstanceDetailJSONParser {
     //Parsing query result and returning list
-    public static InstanceDetail parseFeed(String content) {
+    public static InstanceDetail parseFeed(String contentString) {
 
         InstanceDetail instance = new InstanceDetail();
         //Pass the content string into a JSONObject
-        JSONObject ar = null;
+        JSONObject content = null;
         try {
-            ar = new JSONObject(content);
+            content = new JSONObject(contentString);
 
-            instance.setGetData(ar.getString(""));
-
+            instance.setName(content.getJSONObject("server").getString("name"));
+            instance.setStatus(content.getJSONObject("server").getString("status"));
+            JSONObject addressIP4 = new JSONObject(content.getJSONObject("server").getJSONObject("addresses").getJSONArray("private").getString(0).toString());
+            instance.setAddressIP4(addressIP4.getString("addr"));
+            instance.setImage(content.getJSONObject("server").getJSONObject("image").getString("id"));
+            instance.setFlavor(content.getJSONObject("server").getJSONObject("flavor").getString("id"));
+            instance.setDateCreated(content.getJSONObject("server").getString("created"));
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
