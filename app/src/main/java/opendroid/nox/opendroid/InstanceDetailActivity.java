@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,7 @@ import opendroid.nox.opendroid.parsers.InstanceDetailJSONParser;
 import static java.lang.Thread.sleep;
 
 
-public class InstanceDetailActivity extends Activity {
+public class InstanceDetailActivity extends Activity implements AdapterView.OnItemSelectedListener {
     String _instanceId;
     List<MyTask> tasks = new ArrayList<>();
     InstanceDetail instanceInfo;
@@ -32,6 +36,8 @@ public class InstanceDetailActivity extends Activity {
     TextView image;
     Button start;
     Button stop;
+    Spinner sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,17 @@ public class InstanceDetailActivity extends Activity {
         dateCreated = (TextView)findViewById(R.id.textViewDateCreated);
         image = (TextView)findViewById(R.id.textViewImage);
         flavor = (TextView)findViewById(R.id.textViewFlavor);
+
+        sp = (Spinner)findViewById(R.id.spinner);
+        ArrayList list = new ArrayList();
+        list.add("Action");
+        list.add("Pause");
+        list.add("Resume");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(dataAdapter);
+        sp.setOnItemSelectedListener(this);
 
         start = (Button)findViewById(R.id.buttonStart);
         stop = (Button)findViewById(R.id.buttonStop);
@@ -78,6 +95,31 @@ public class InstanceDetailActivity extends Activity {
                 requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
             }
         });
+    }
+
+    public void pause() {
+        InstanceControl.pauseInstance("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action", "pause");
+        sp.setSelection(0);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
+
+    }
+
+    public void resume(){
+        InstanceControl.resumeInstance("http://95.44.212.163:8774/v2.1/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action", "unpause");
+        sp.setSelection(0);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
+
     }
 
     @Override
@@ -138,6 +180,20 @@ public class InstanceDetailActivity extends Activity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(sp.getSelectedItemPosition() == 1){
+            pause();
+        }else if(sp.getSelectedItemPosition() == 2){
+            resume();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        return;
+    }
+
     private class MyTask extends AsyncTask<String, String, String> {
         ProgressDialog progress = null;
         @Override
@@ -173,4 +229,6 @@ public class InstanceDetailActivity extends Activity {
         }
 
     }
+
+
 }

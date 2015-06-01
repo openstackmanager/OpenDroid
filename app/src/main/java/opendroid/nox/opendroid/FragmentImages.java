@@ -6,7 +6,7 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +44,7 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
     }
 
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_images, container, false);
 
         ListView = (ListView) rootView.findViewById(R.id.ImageslistView);
@@ -95,25 +92,25 @@ public class FragmentImages extends ListFragment implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FragmentManager fragmentManager = getFragmentManager();
-
-        if (position == 0) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentOverview.newInstance())
-                    .commit();
-        } else if (position == 1) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentInstances.newInstance())
-                    .commit();
-        } else if (position == 2) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentVolumes.newInstance())
-                    .commit();
-        } else if (position == 3) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, FragmentImages.newInstance())
-                    .commit();
-        }
+//        FragmentManager fragmentManager = getFragmentManager();
+//
+//        if (position == 0) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, FragmentOverview.newInstance())
+//                    .commit();
+//        } else if (position == 1) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, FragmentInstances.newInstance())
+//                    .commit();
+//        } else if (position == 2) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, FragmentVolumes.newInstance())
+//                    .commit();
+//        } else if (position == 3) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, FragmentImages.newInstance())
+//                    .commit();
+//        }
 
     }
 
