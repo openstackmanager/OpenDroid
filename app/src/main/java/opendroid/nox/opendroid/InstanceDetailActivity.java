@@ -2,6 +2,7 @@ package opendroid.nox.opendroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,25 +20,25 @@ public class InstanceDetailActivity extends Activity {
         String _instanceId = intent.getStringExtra("Id");
         Toast.makeText(this, _instanceId, Toast.LENGTH_LONG).show();
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle("Instance Detail");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_instance_detail, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            finish();
+        if (id == R.id.horizon_url) {
+            String horizonWebpage = HttpManager.endPoint;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(horizonWebpage));
+            startActivity(intent);
+
             return true;
         }
 

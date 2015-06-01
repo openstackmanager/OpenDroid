@@ -3,44 +3,27 @@ package opendroid.nox.opendroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 import opendroid.nox.opendroid.model.Limits;
 import opendroid.nox.opendroid.parsers.LimitsJSONParser;
 
-/**
- * Created by NOX on 16/04/2015.
- */
+
 public class FragmentOverview extends Fragment {
     List<MyTask> tasks = new ArrayList<>();
-    TextView output;
     View rootView;
     Limits limitList;
-    String used = "0";
-    String totalRam = "0";
-    PieChart ramChart,chart3,chart4;
+    PieChart instanceChart, ramChart, cpuChart, floatingIpChart;
 
     public static FragmentOverview newInstance(){
         FragmentOverview fragment = new FragmentOverview();
@@ -52,38 +35,11 @@ public class FragmentOverview extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_overview, container, false);
-        //output = (TextView) rootView.findViewById(R.id.textView);
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/limits");
-        //BarChart chart = (BarChart) rootView.findViewById(R.id.chart);
-        ramChart = (PieChart) rootView.findViewById(R.id.chart2);
-        chart3 = (PieChart) rootView.findViewById(R.id.chart3);
-        chart4 = (PieChart) rootView.findViewById(R.id.chart4);
-
-//        ArrayList<BarEntry> entries = new ArrayList<>();
-//        entries.add(new BarEntry(4f, 0));
-//        entries.add(new BarEntry(8f, 1));
-//        entries.add(new BarEntry(6f, 2));
-//        entries.add(new BarEntry(12f, 3));
-//        entries.add(new BarEntry(18f, 4));
-//        entries.add(new BarEntry(9f, 5));
-//
-//        BarDataSet dataset = new BarDataSet(entries, "# of Calls");
-//
-//        ArrayList<String> labels = new ArrayList<String>();
-//        labels.add("January");
-//        labels.add("February");
-//        labels.add("March");
-//        labels.add("April");
-//        labels.add("May");
-//        labels.add("June");
-//
-//        BarData data = new BarData(labels, dataset);
-//        chart.setData(data);
-//        chart.setDescription("# of times Alice called Bob");
-//        chart.animateY(5000);
-//        chart.invalidate();
-
-
+        ramChart = (PieChart) rootView.findViewById(R.id.ram_chart);
+        cpuChart = (PieChart) rootView.findViewById(R.id.cpu_chart);
+        instanceChart = (PieChart) rootView.findViewById(R.id.instance_chart);
+        floatingIpChart = (PieChart) rootView.findViewById(R.id.floating_ip_chart);
 
         return rootView;
     }
@@ -101,94 +57,147 @@ public class FragmentOverview extends Fragment {
     }
 
     protected void updateDisplay() {
-        //Populatate charts
+        //Populate charts
         if (limitList != null) {
-            chartOne(limitList.getTotalRAMUsed(),limitList.getMaxTotalRAMSize());
-            chartTwo(limitList.getTotalCoresUsed(), limitList.getMaxTotalCores());
+            ramChart(limitList.getTotalRAMUsed(), limitList.getMaxTotalRAMSize());
+            cpuChart(limitList.getTotalCoresUsed(), limitList.getMaxTotalCores());
+            instanceChart(limitList.getTotalInstancesUsed(), limitList.getMaxTotalInstances());
+            floatingIpChart(limitList.getTotalFloatingIpsUsed(), limitList.getMaxTotalFloatingIps());
         }
     }
+    public void cpuChart(String coresUsed, String totalCores){
+        int usedcores = Integer.parseInt(coresUsed);
+        int totalcores = Integer.parseInt(totalCores);
+        int remainingcores = totalcores - usedcores;
 
-    public void chartOne(String ramUsed, String totalRam){
         ArrayList<Entry> num = new ArrayList<>();
-        String[] items = {"Used","Remaining"};
-        int usedram = Integer.parseInt(ramUsed);
-        int totalram = Integer.parseInt(totalRam);
-        num.add(new Entry(usedram, 1));
-        num.add(new Entry(totalram, 2));
+        num.add(new Entry(usedcores, 1));
+        num.add(new Entry(remainingcores, 2));
 
         ArrayList<String> itemArray = new ArrayList<>();
-        itemArray.add(items[0] + ": " + usedram + " MB");
+        itemArray.add("Used: " + coresUsed + " Cores");
+        itemArray.add("Remaining: " + remainingcores + " Cores");
 
-        int remainingRam= totalram - usedram;
-
-        itemArray.add(items[1] + ": " + remainingRam + " MB");
-
-        PieDataSet pdata = new PieDataSet(num,"RAM");
-        pdata.setColors(new int[] { R.color.primaryColor, R.color.primaryColorDark, R.color.primaryColor,R.color.primaryColorDark}, this.getActivity());
+        PieDataSet pdata = new PieDataSet(num,"");
         pdata.setSliceSpace(2);
-        ramChart.setUsePercentValues(true);
-        ramChart.setDescription("ram usage");
-        ramChart.setDrawHoleEnabled(true);
-        ramChart.setHoleColorTransparent(true);
-        ramChart.setHoleRadius(7);
-        ramChart.setTransparentCircleRadius(10);
-        ramChart.animateXY(3000, 2000);
-        ramChart.setRotationEnabled(false);
-
-        ArrayList<Integer> colours = new ArrayList<>();
-        for(int c : ColorTemplate.COLORFUL_COLORS) {
-            //colours.add(c);
-        }
+        pdata.setDrawValues(false);
+        pdata.setColors(ColorTemplate.LIBERTY_COLORS);
+        cpuChart.setDescription("");
+        cpuChart.setDrawHoleEnabled(true);
+        cpuChart.setUsePercentValues(true);
+        cpuChart.setHoleColorTransparent(true);
+        cpuChart.setHoleRadius(30);
+        cpuChart.setTransparentCircleRadius(40);
+        cpuChart.animateXY(2000, 1000);
+        cpuChart.setRotationEnabled(false);
+        cpuChart.setCenterText("CPU");
+        cpuChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
 
-        colours.add(ColorTemplate.getHoloBlue());
-        //pdata.setColors(colours);
-        ramChart.setData(dataSet);
-        Legend legend = ramChart.getLegend();
-        legend.setEnabled(true);
-        legend.setTextSize(12);
+        cpuChart.setData(dataSet);
+        cpuChart.invalidate();
+    }
 
+    public void ramChart(String ramUsed, String totalRam){
+        int usedram = Integer.parseInt(ramUsed);
+        int totalram = Integer.parseInt(totalRam);
+        int remainingram = totalram - usedram;
+
+        ArrayList<Entry> num = new ArrayList<>();
+        num.add(new Entry(usedram, 1));
+        num.add(new Entry(remainingram, 2));
+
+        ArrayList<String> itemArray = new ArrayList<>();
+        itemArray.add("Used: " + usedram + " MB");
+        itemArray.add("Remaining: " + remainingram + " MB");
+
+        PieDataSet pdata = new PieDataSet(num,"");
+        pdata.setSliceSpace(2);
+        pdata.setDrawValues(false);
+        pdata.setColors(ColorTemplate.LIBERTY_COLORS);
+        ramChart.setDescription("");
+        ramChart.setUsePercentValues(true);
+        ramChart.setDrawHoleEnabled(true);
+        ramChart.setHoleColorTransparent(true);
+        ramChart.setHoleRadius(30);
+        ramChart.setTransparentCircleRadius(40);
+        ramChart.animateXY(5000, 3000);
+        ramChart.setRotationEnabled(false);
+        ramChart.setCenterText("RAM");
+        ramChart.setDrawSliceText(true);
+
+        PieData dataSet = new PieData(itemArray,pdata);
+
+        ramChart.setData(dataSet);
         ramChart.invalidate();
     }
 
-    public void chartTwo(String coresUsed, String totalCores){
+    public void instanceChart(String instancesUsed, String totalInstances){
+        int used_instances = Integer.parseInt(instancesUsed);
+        int total_instances = Integer.parseInt(totalInstances);
+        int remaining_instances = total_instances - used_instances;
+
         ArrayList<Entry> num = new ArrayList<>();
-        String[] items = {"Used","Remaining"};
-        int usedcores = Integer.parseInt(coresUsed);
-        int totalcores = Integer.parseInt(totalCores);
-        num.add(new Entry(usedcores, 1));
-        num.add(new Entry(totalcores, 2));
+        num.add(new Entry(used_instances, 1));
+        num.add(new Entry(remaining_instances, 2));
 
         ArrayList<String> itemArray = new ArrayList<>();
+        itemArray.add("Used: " + used_instances + " Instances");
+        itemArray.add("Remaining: " + remaining_instances + " Instances");
 
-        itemArray.add(items[0]+": "+coresUsed+" Cores");
-
-        int remainingCores = totalcores - usedcores;
-
-        itemArray.add(items[1] +": "+remainingCores+" Cores");
-
-        PieDataSet pdata = new PieDataSet(num,"CORES");
+        PieDataSet pdata = new PieDataSet(num,"");
+        pdata.setColors(ColorTemplate.LIBERTY_COLORS);
         pdata.setSliceSpace(2);
-        chart3.setUsePercentValues(true);
-        chart3.setDescription("Core usage");
-        chart3.setDrawHoleEnabled(true);
-        chart3.setHoleColorTransparent(true);
-        chart3.setHoleRadius(7);
-        chart3.setTransparentCircleRadius(10);
-        chart3.animateXY(3000, 2000);
-
-        ArrayList<Integer> colours = new ArrayList<>();
-        for(int c : ColorTemplate.LIBERTY_COLORS)
-            colours.add(c);
+        pdata.setDrawValues(false);
+        instanceChart.setUsePercentValues(true);
+        instanceChart.setDescription("");
+        instanceChart.setDrawHoleEnabled(true);
+        instanceChart.setHoleColorTransparent(true);
+        instanceChart.setHoleRadius(30);
+        instanceChart.setTransparentCircleRadius(40);
+        instanceChart.animateXY(1500, 1000);
+        instanceChart.setRotationEnabled(false);
+        instanceChart.setCenterText("Instances");
+        instanceChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
-        colours.add(ColorTemplate.getHoloBlue());
-        pdata.setColors(colours);
-        Legend legend = chart3.getLegend();
-        legend.setEnabled(true);
-        chart3.setData(dataSet);
-        chart3.invalidate();
+
+        instanceChart.setData(dataSet);
+        instanceChart.invalidate();
+    }
+    public void floatingIpChart(String floatingIpUsed, String totalFloatingIps){
+        int used_floating_ips = Integer.parseInt(floatingIpUsed);
+        int total_floating_ips = Integer.parseInt(totalFloatingIps);
+        int remaining_floating_ips = total_floating_ips - used_floating_ips;
+
+        ArrayList<Entry> num = new ArrayList<>();
+        num.add(new Entry(used_floating_ips, 1));
+        num.add(new Entry(remaining_floating_ips, 2));
+
+        ArrayList<String> itemArray = new ArrayList<>();
+        itemArray.add("Used: " + used_floating_ips);
+        itemArray.add("Remaining: " + remaining_floating_ips);
+
+        PieDataSet pdata = new PieDataSet(num,"");
+        pdata.setColors(ColorTemplate.LIBERTY_COLORS);
+        pdata.setSliceSpace(2);
+        pdata.setDrawValues(false);
+        floatingIpChart.setUsePercentValues(true);
+        floatingIpChart.setDescription("");
+        floatingIpChart.setDrawHoleEnabled(true);
+        floatingIpChart.setHoleColorTransparent(true);
+        floatingIpChart.setHoleRadius(30);
+        floatingIpChart.setTransparentCircleRadius(40);
+        floatingIpChart.animateXY(2500, 1500);
+        floatingIpChart.setRotationEnabled(false);
+        floatingIpChart.setCenterText("Floating IPs");
+        floatingIpChart.setDrawSliceText(true);
+
+        PieData dataSet = new PieData(itemArray,pdata);
+
+        floatingIpChart.setData(dataSet);
+        floatingIpChart.invalidate();
     }
 
     private class MyTask extends AsyncTask<String, String, String> {
@@ -214,7 +223,6 @@ public class FragmentOverview extends Fragment {
             limitList = LimitsJSONParser.parseFeed(result);
 
             //call updateDisplay to populate listView
-
 
             //Remove tasks from list and when list size is back to zero make progressbar invisible
             tasks.remove(this);

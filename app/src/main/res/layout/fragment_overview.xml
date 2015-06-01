@@ -4,32 +4,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@android:color/darker_gray"
+        android:dividerPadding="10dp">
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart2"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-
-            />
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart3"
+            android:id="@+id/cpu_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             />
 
+
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart4"
+            android:id="@+id/ram_chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/instance_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             />
+
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart5"
+            android:id="@+id/floating_ip_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             />
-</LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
+</ScrollView>
