@@ -103,7 +103,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         BarDataSet dataset = new BarDataSet(entries,"");
         BarData data = new BarData(labels, dataset);
         YAxis yAxis = chart.getAxis(YAxis.AxisDependency.LEFT);
-        yAxis.setAxisMaxValue(max_ram_MB);
+        yAxis.setAxisMaxValue(500);
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
         chart.setPinchZoom(false);
