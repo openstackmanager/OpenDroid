@@ -142,7 +142,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_instance_detail, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -156,6 +156,12 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             finish();
+            return true;
+        }else  if (id == R.id.horizon_url) {
+            String horizonWebpage = HttpManager.endPoint;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(horizonWebpage));
+            startActivity(intent);
+
             return true;
         }
 
