@@ -85,7 +85,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         labels.add("CPU");
 
         ArrayList<BarEntry> entries = new ArrayList<>();
-        float ramMB;
+        float ramMB, max_ram_MB = 0;
         if(info.getMemory_rss() != null) {
             float ram = Float.parseFloat(info.getMemory_rss());
             ramMB = ram / 1000;
@@ -93,11 +93,15 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
             entries.add(new BarEntry(ramMB, 0));
             entries.add(new BarEntry(8f, 1));
         }
+        if(info.getMemory()!=null){
+            float max_ram = Float.parseFloat(info.getMemory());
+            max_ram_MB = max_ram / 1000;
+        }
 
         BarDataSet dataset = new BarDataSet(entries,"");
         BarData data = new BarData(labels, dataset);
         YAxis yAxis = chart.getAxis(YAxis.AxisDependency.LEFT);
-        yAxis.setAxisMaxValue(100f);
+        yAxis.setAxisMaxValue(max_ram_MB);
         chart.setData(data);
         chart.setDrawBarShadow(true);
         chart.invalidate();
