@@ -20,5 +20,10 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="splash_text">OPEN\nDROID</string>
     <string name="title_activity_instance_detail">InstanceDetailActivity</string>
+    <string name="StatusValue">Status:</string>
+    <string name="IPv4">IPv4:</string>
+    <string name="ImageText">Image:</string>
+    <string name="FlavorText">Flavor:</string>
+    <string name="CreatedDate">Created:</string>
 
 </resources>

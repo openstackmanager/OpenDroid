@@ -81,11 +81,18 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         ArrayList<String> labels = new ArrayList<>();
         labels.add("Ram");
         labels.add("CPU");
-        float ram = Float.parseFloat(info.getMemory_rss());
-        float ramMB = ram / 1000;
+
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(ramMB, 0));
-        entries.add(new BarEntry(8f, 1));
+        float ramMB;
+        if(info.getMemory_rss() != null) {
+            float ram = Float.parseFloat(info.getMemory_rss());
+            ramMB = ram / 1000;
+
+            entries.add(new BarEntry(ramMB, 0));
+            entries.add(new BarEntry(8f, 1));
+        }
+
+
 
         BarDataSet dataset = new BarDataSet(entries,"");
 

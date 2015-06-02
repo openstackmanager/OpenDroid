@@ -1,83 +1,68 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="opendroid.nox.opendroid.InstanceDetailActivity">
+    tools:context="opendroid.nox.opendroid.InstanceDetailActivity"
+    android:orientation="vertical">
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="25dp">
 
         <TextView
+            android:id="@+id/InstanceDetailNameT_V"
             android:layout_width="179dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/InstanceDetailNameT_V"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="left"
-            android:layout_weight="0.79" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Spinner
+            android:id="@+id/spinner"
             android:layout_width="130dp"
             android:layout_height="fill_parent"
-            android:id="@+id/spinner"
-            android:layout_alignParentStart="true"
-            android:layout_alignEnd="@+id/buttonStart"
             android:layout_column="1"
-            android:spinnerMode="dropdown"
-            android:layout_weight="1"
-            android:layout_gravity="right" />
+
+            android:spinnerMode="dropdown" />
     </GridLayout>
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_alignParentStart="false"
         android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
         android:layout_marginTop="28dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
-
-        <View style="@style/Divider"
+        <View
             android:id="@+id/view"
-            android:layout_below="@+id/InstanceDetailNameT_V"
-            android:layout_alignParentEnd="true" />
+            style="@style/Divider"
+
+            />
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Status:"
                 android:id="@+id/InstanceStatusText"
-                android:layout_alignTop="@+id/view"
-                android:layout_alignParentStart="true"
-                android:layout_column="0" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="0"
+                android:text="@string/StatusValue"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/InstanceStatus"
-                android:layout_below="@+id/InstanceDetailNameT_V"
-                android:layout_toEndOf="@+id/InstanceStatusText" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </TableRow>
 
@@ -86,21 +71,18 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="IPv4: "
                 android:id="@+id/textViewIPv4_text"
-                android:layout_below="@+id/InstanceStatusText"
-                android:layout_alignEnd="@+id/InstanceStatus" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:text="Large Text"
+                android:text="@string/IPv4"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/textViewIPv4"
-                android:layout_column="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
         </TableRow>
 
         <TableRow
@@ -108,20 +90,19 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Image: "
                 android:id="@+id/textViewImage_text"
-                android:layout_column="0" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:text="Large Text"
+                android:layout_column="0"
+                android:text="@string/ImageText"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/textViewImage"
-                android:layout_column="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
         </TableRow>
 
         <TableRow
@@ -129,20 +110,19 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Flavor: "
                 android:id="@+id/textViewFlavor_Text"
-                android:layout_column="0" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:text="Medium Text"
+                android:layout_column="0"
+                android:text="@string/FlavorText"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/textViewFlavor"
-                android:layout_column="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
         </TableRow>
 
         <TableRow
@@ -150,29 +130,28 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView_dateCreated_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Created: "
-                android:id="@+id/textView_dateCreated_text"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:text="@string/CreatedDate"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
+                android:id="@+id/textViewDateCreated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:text="Large Text"
-                android:id="@+id/textViewDateCreated"
-                android:layout_column="1" />
+                android:layout_column="1"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
         </TableRow>
 
     </TableLayout>
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/instaceChart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_below="@+id/tableLayout"
+        android:layout_alignStart="@id/tableLayout"
         android:layout_marginTop="20dp" />
 
-</RelativeLayout>
+</LinearLayout>
