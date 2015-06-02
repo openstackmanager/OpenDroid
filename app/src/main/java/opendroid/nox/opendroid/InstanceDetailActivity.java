@@ -15,10 +15,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import opendroid.nox.opendroid.model.InstanceDetail;
+import opendroid.nox.opendroid.model.InstanceDiagnosticsModel;
 import opendroid.nox.opendroid.parsers.InstanceDetailJSONParser;
 
 import static java.lang.Thread.sleep;
@@ -37,7 +43,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
     Button start;
     Button stop;
     Spinner sp;
-
+    static BarChart chart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +56,14 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         getActionBar().setTitle("Detail");
         //Needs to be dynamic
         requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
-
+        //diagnostics("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId+"/diagnostics");
         name = (TextView)findViewById(R.id.InstanceDetailNameT_V);
         status = (TextView)findViewById(R.id.InstanceStatus);
         addressIPv4 = (TextView)findViewById(R.id.textViewIPv4);
         dateCreated = (TextView)findViewById(R.id.textViewDateCreated);
         image = (TextView)findViewById(R.id.textViewImage);
         flavor = (TextView)findViewById(R.id.textViewFlavor);
-
+        chart = (BarChart)findViewById(R.id.instaceChart);
         sp = (Spinner)findViewById(R.id.spinner);
         ArrayList list = new ArrayList();
         list.add("Action");
@@ -69,32 +75,23 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         sp.setAdapter(dataAdapter);
         sp.setOnItemSelectedListener(this);
 
-        start = (Button)findViewById(R.id.buttonStart);
-        stop = (Button)findViewById(R.id.buttonStop);
+    }
 
-        start.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                InstanceControl.pauseInstance("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action", "pause");
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
-            }
-        });
+    public static void populateChart(){
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("Ram");
+        labels.add("CPU");
 
-        stop.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                InstanceControl.resumeInstance("http://95.44.212.163:8774/v2.1/1f06575369474710959b62a0cb97b132/servers/" + _instanceId + "/action","unpause");
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                requestData("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId);
-            }
-        });
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(4f, 0));
+        entries.add(new BarEntry(8f, 1));
+
+        BarDataSet dataset = new BarDataSet(entries,"");
+
+        BarData data = new BarData(labels, dataset);
+        chart.setData(data);
+        chart.setDrawBarShadow(true);
+        chart.invalidate();
     }
 
     public void pause() {
@@ -145,9 +142,9 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         return super.onOptionsItemSelected(item);
     }
 
-    private void requestData(String uri) {
+    private void requestData(String... params) {
         MyTask task = new MyTask();
-        task.execute(uri);
+        task.execute(params[0]);
     }
 
     private void getFlavor(String uri){
@@ -158,15 +155,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
     public static void setFlavorName(String _flavor){
         flavor.setText(_flavor);
     }
-    public void start(String uri) {
-        MyTask task = new MyTask();
-        task.execute(uri);
-    }
 
-    public void stop(String uri) {
-        MyTask task = new MyTask();
-        task.execute(uri);
-    }
     protected void updateDisplay() {
         //Populatate charts
         if (instanceInfo != null) {
@@ -177,7 +166,13 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
             dateCreated.setText(instanceInfo.getDateCreated());
             String id = instanceInfo.getFlavor().toString();
             getFlavor("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/flavors/" + id);
+            InstaceDiagnostics task = new InstaceDiagnostics();
+            task.execute("http://95.44.212.163:8774/v2/1f06575369474710959b62a0cb97b132/servers/" + _instanceId+"/diagnostics");
         }
+    }
+
+    public static void updateDiagnostics(InstanceDiagnosticsModel info){
+        populateChart();
     }
 
     @Override
@@ -200,7 +195,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         protected void onPreExecute() {
 
             if (tasks.size() == 0) {
-                progress = ProgressDialog.show(InstanceDetailActivity.this,"Loading", "", true, true);
+               progress = ProgressDialog.show(InstanceDetailActivity.this,"Loading", "", true, true);
             }
             tasks.add(this);
         }

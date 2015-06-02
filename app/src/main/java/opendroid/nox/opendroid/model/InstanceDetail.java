@@ -6,7 +6,7 @@ package opendroid.nox.opendroid.model;
 public class InstanceDetail {
 
     private String status;
-    private String flavor;
+    private String flavor = "";
     private String addressIP4;
     private String name;
     private String dateCreated;
