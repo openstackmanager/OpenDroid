@@ -43,8 +43,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
 
     public static FragmentInstances newInstance(){
-        FragmentInstances fragment = new FragmentInstances();
-        return fragment;
+        return new FragmentInstances();
     }
 
     public FragmentInstances(){}

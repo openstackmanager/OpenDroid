@@ -26,8 +26,7 @@ public class FragmentOverview extends Fragment {
     PieChart instanceChart, ramChart, cpuChart, floatingIpChart;
 
     public static FragmentOverview newInstance(){
-        FragmentOverview fragment = new FragmentOverview();
-        return fragment;
+        return new FragmentOverview();
     }
 
     public FragmentOverview(){}
