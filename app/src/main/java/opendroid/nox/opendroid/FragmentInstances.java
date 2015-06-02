@@ -26,7 +26,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import opendroid.nox.opendroid.dummy.DummyContent;
 import opendroid.nox.opendroid.model.Instances;
 import opendroid.nox.opendroid.parsers.InstanceJSONParser;
 
@@ -42,7 +41,6 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
     ListView lv;
     String[] instanceId;
 
-    private ItemFragment.OnFragmentInteractionListener mListener;
 
     public static FragmentInstances newInstance(){
         FragmentInstances fragment = new FragmentInstances();
@@ -74,13 +72,6 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        FragmentManager fragmentManager = getFragmentManager();
-//        //Loading details fragment and passing the instance id to the FragmentInstanceDetail Class.
-//        //Using a String array to hold the server id's, this allows the id for the selected server to be passed.
-//
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.container, FragmentInstanceDetail.newInstance(instanceId[position]))
-//                    .commit();
         Intent intent = new Intent(getActivity(), InstanceDetailActivity.class);
         intent.putExtra("Id",instanceId[position]);
         startActivity(intent);
@@ -107,7 +98,7 @@ public class FragmentInstances extends ListFragment implements AdapterView.OnIte
                 /**
                  * Populate the list view with instances
                  */
-                instances.add(instance.getName()+"\n"+"Running" );
+                instances.add(instance.getName() );
                 //Populating the Array of id's
                 instanceId[count] = instance.getId();
                 count++;
