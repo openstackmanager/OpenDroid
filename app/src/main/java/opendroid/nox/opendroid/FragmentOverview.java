@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -81,7 +82,7 @@ public class FragmentOverview extends Fragment {
         pdata.setSliceSpace(2);
         pdata.setDrawValues(false);
         pdata.setColors(ColorTemplate.LIBERTY_COLORS);
-        cpuChart.setDescription("");
+        cpuChart.setDescription("Total: "+totalcores+ " Cores");
         cpuChart.setDrawHoleEnabled(true);
         cpuChart.setUsePercentValues(true);
         cpuChart.setHoleColorTransparent(true);
@@ -93,6 +94,8 @@ public class FragmentOverview extends Fragment {
         cpuChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
+        Legend legend = cpuChart.getLegend();
+        legend.setEnabled(false);
 
         cpuChart.setData(dataSet);
         cpuChart.invalidate();
@@ -115,7 +118,7 @@ public class FragmentOverview extends Fragment {
         pdata.setSliceSpace(2);
         pdata.setDrawValues(false);
         pdata.setColors(ColorTemplate.LIBERTY_COLORS);
-        ramChart.setDescription("");
+        ramChart.setDescription("Total: "+totalram+" MB");
         ramChart.setUsePercentValues(true);
         ramChart.setDrawHoleEnabled(true);
         ramChart.setHoleColorTransparent(true);
@@ -127,6 +130,8 @@ public class FragmentOverview extends Fragment {
         ramChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
+        Legend legend = ramChart.getLegend();
+        legend.setEnabled(false);
 
         ramChart.setData(dataSet);
         ramChart.invalidate();
@@ -150,7 +155,7 @@ public class FragmentOverview extends Fragment {
         pdata.setSliceSpace(2);
         pdata.setDrawValues(false);
         instanceChart.setUsePercentValues(true);
-        instanceChart.setDescription("");
+        instanceChart.setDescription("Total "+total_instances+"Instances");
         instanceChart.setDrawHoleEnabled(true);
         instanceChart.setHoleColorTransparent(true);
         instanceChart.setHoleRadius(30);
@@ -161,6 +166,8 @@ public class FragmentOverview extends Fragment {
         instanceChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
+        Legend legend = instanceChart.getLegend();
+        legend.setEnabled(false);
 
         instanceChart.setData(dataSet);
         instanceChart.invalidate();
@@ -183,7 +190,7 @@ public class FragmentOverview extends Fragment {
         pdata.setSliceSpace(2);
         pdata.setDrawValues(false);
         floatingIpChart.setUsePercentValues(true);
-        floatingIpChart.setDescription("");
+        floatingIpChart.setDescription("Total: "+total_floating_ips+" Floating IPs");
         floatingIpChart.setDrawHoleEnabled(true);
         floatingIpChart.setHoleColorTransparent(true);
         floatingIpChart.setHoleRadius(30);
@@ -194,6 +201,8 @@ public class FragmentOverview extends Fragment {
         floatingIpChart.setDrawSliceText(true);
 
         PieData dataSet = new PieData(itemArray,pdata);
+        Legend legend = floatingIpChart.getLegend();
+        legend.setEnabled(false);
 
         floatingIpChart.setData(dataSet);
         floatingIpChart.invalidate();
@@ -212,8 +221,7 @@ public class FragmentOverview extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            String content = HttpManager.getData(params[0]);
-            return content;
+            return HttpManager.getData(params[0]);
         }
 
         @Override
