@@ -77,13 +77,14 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
 
     }
 
-    public static void populateChart(){
+    public static void populateChart(InstanceDiagnosticsModel info){
         ArrayList<String> labels = new ArrayList<>();
         labels.add("Ram");
         labels.add("CPU");
-
+        float ram = Float.parseFloat(info.getMemory_rss());
+        float ramMB = ram / 1000;
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(4f, 0));
+        entries.add(new BarEntry(ramMB, 0));
         entries.add(new BarEntry(8f, 1));
 
         BarDataSet dataset = new BarDataSet(entries,"");
@@ -172,7 +173,7 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
     }
 
     public static void updateDiagnostics(InstanceDiagnosticsModel info){
-        populateChart();
+        populateChart(info);
     }
 
     @Override

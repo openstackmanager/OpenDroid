@@ -17,6 +17,8 @@ public class InstanceDiagnosticsJSONParser {
         JSONObject content = null;
         try {
             content = new JSONObject(contentString);
+            instance.setMemory(content.getString("memory"));
+            instance.setMemory_rss(content.getString("memory-rss"));
 
         } catch (JSONException e1) {
             e1.printStackTrace();
