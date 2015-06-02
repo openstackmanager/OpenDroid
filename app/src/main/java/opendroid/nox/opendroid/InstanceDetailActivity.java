@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -102,6 +104,11 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
         BarData data = new BarData(labels, dataset);
         YAxis yAxis = chart.getAxis(YAxis.AxisDependency.LEFT);
         yAxis.setAxisMaxValue(max_ram_MB);
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
+        chart.setPinchZoom(false);
+        chart.animateY(2000);
+        chart.setDescription("");
         chart.setData(data);
         chart.setDrawBarShadow(true);
         chart.invalidate();
@@ -135,19 +142,20 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_instance_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.horizon_url) {
-            String horizonWebpage = HttpManager.endPoint;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(horizonWebpage));
-            startActivity(intent);
-
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
             return true;
         }
 
