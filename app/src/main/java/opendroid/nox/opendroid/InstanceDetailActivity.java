@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -93,11 +94,10 @@ public class InstanceDetailActivity extends Activity implements AdapterView.OnIt
             entries.add(new BarEntry(8f, 1));
         }
 
-
-
         BarDataSet dataset = new BarDataSet(entries,"");
-
         BarData data = new BarData(labels, dataset);
+        YAxis yAxis = chart.getAxis(YAxis.AxisDependency.LEFT);
+        yAxis.setAxisMaxValue(100f);
         chart.setData(data);
         chart.setDrawBarShadow(true);
         chart.invalidate();
